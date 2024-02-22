@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .forms import PizzaForm, MultiplePizzaForm
+from django.forms import formset_factory
+
 
 def home(request):
     return render(request, "pizza/home.html", {})
@@ -48,3 +50,23 @@ def pizzas(request):
 
     if filled_multiple_pizza_form.is_valid():
         number_of_pizzas = filled_multiple_pizza_form.cleaned_data["number"]
+
+    # Class that hold the formset
+    PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
+    formset = PizzaFormSet()
+
+    # Handle the received data
+    if request.method == "POST":
+        # Fill a formset with the request data
+        filled_formset = PizzaFormSet(request.POST)
+        if filled_formset.is_valid():
+            # Print the topping 1 of all forms
+            for form in filled_formset:
+                print(form.cleaned_data["topping1"])
+            # Note of success
+            note = "Pizzas have been orderer!"
+        else:
+            # Note of error
+            note = "Order has not created, please try again."
+
+        return render(request, "pizza/pizzas.html", {"note": note, "formset": formset})
