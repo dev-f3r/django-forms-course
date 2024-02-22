@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from .forms import PizzaForm, MultiplePizzaForm
 
-
 def home(request):
     return render(request, "pizza/home.html", {})
 
@@ -44,4 +43,8 @@ def order(request):
 
 
 def pizzas(request):
-    pass
+    number_of_pizzas = 2
+    filled_multiple_pizza_form = MultiplePizzaForm(request.GET)
+
+    if filled_multiple_pizza_form.is_valid():
+        number_of_pizzas = filled_multiple_pizza_form.cleaned_data["number"]
