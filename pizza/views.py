@@ -53,6 +53,7 @@ def pizzas(request):
 
     # Class that hold the formset
     PizzaFormSet = formset_factory(PizzaForm, extra=number_of_pizzas)
+    # Base form set
     formset = PizzaFormSet()
 
     # Handle the received data
@@ -70,3 +71,5 @@ def pizzas(request):
             note = "Order has not created, please try again."
 
         return render(request, "pizza/pizzas.html", {"note": note, "formset": formset})
+    else:
+        return render(request, "pizza/pizzas.html", {"formset": formset})
