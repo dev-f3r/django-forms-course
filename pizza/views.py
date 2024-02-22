@@ -10,7 +10,7 @@ def order(request):
     # Handling a POST request
     if request.method == "POST":
         # Capture all the information of the POST request into a `PizzaForm` instance
-        filled_form = PizzaForm(request.POST)
+        filled_form = PizzaForm(request.POST, request.FILES)
 
         # If `filled_form` is valid
         if filled_form.is_valid():
