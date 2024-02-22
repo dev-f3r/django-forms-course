@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import PizzaForm
+from .forms import PizzaForm, MultiplePizzaForm
 
 
 def home(request):
@@ -7,6 +7,10 @@ def home(request):
 
 
 def order(request):
+
+    # Make a form set
+    multiple_form = MultiplePizzaForm()
+
     # Handling a POST request
     if request.method == "POST":
         # Capture all the information of the POST request into a `PizzaForm` instance
@@ -19,13 +23,25 @@ def order(request):
                 filled_form.cleaned_data["size"],
                 filled_form.cleaned_data["topping1"],
                 filled_form.cleaned_data["topping2"],
-                )
+            )
 
             # Make a new form
             new_form = PizzaForm()
             # Render the order template and pass the new form and the message
-            return render(request, "pizza/order.html", {"pizzaform": new_form, "note": note})
+            return render(
+                request,
+                "pizza/order.html",
+                {"pizzaform": new_form, "note": note, "multiple_form": multiple_form},
+            )
     # Handling the rest of http methods
     else:
         form = PizzaForm()
-        return render(request, "pizza/order.html", {"pizzaform": form})
+        return render(
+            request,
+            "pizza/order.html",
+            {"pizzaform": form, "multiple_form": multiple_form},
+        )
+
+
+def pizzas(request):
+    pass
