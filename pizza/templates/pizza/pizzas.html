@@ -4,7 +4,7 @@
 <form action="{% url "pizzas" %}" method="post">
     {% csrf_token %}
 
-    {{ formset.managment_form }}
+    {{ formset.management_form }}
 
     {% for form in formset %}
         {{ form }}
