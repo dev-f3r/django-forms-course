@@ -14,7 +14,7 @@
 
 <h3>Want more than one pizza?</h3>
 
-<form action="{% url "pizzas" %}">
+<form action="{% url "pizzas" %}" method="get">
     {{ multiple_form }}
 
     <input type="submit" value="Get Pizzas">
