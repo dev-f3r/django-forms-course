@@ -107,6 +107,16 @@ def edit_order(request, pk):
             filled_form.save()
             # Replace the past form with new
             form = filled_form
+            # Success message
+            note = "Order has been updated."
+
+            return render(
+                request,
+                "pizza/edit_order.html",
+                {"note": note, "pizzaform": form, "pizza": pizza},
+            )
     # Handle non-POST requests
     else:
-        return render(request, "pizza/edit_order.html", {"pizzaform": form, "pizza": pizza})
+        return render(
+            request, "pizza/edit_order.html", {"pizzaform": form, "pizza": pizza}
+        )
