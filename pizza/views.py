@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .forms import PizzaForm, MultiplePizzaForm
 from django.forms import formset_factory
 
+from .models import Pizza
+
 
 def home(request):
     return render(request, "pizza/home.html", {})
@@ -19,7 +21,9 @@ def order(request):
         # If `filled_form` is valid
         if filled_form.is_valid():
             # Save the object
-            filled_form.save()
+            created_pizza = filled_form.save()
+            # Id of the order
+            created_pizza_pk = created_pizza.id
 
             # Make a message with the form information
             note = "Thanks for ordering! You %s with %s and %s is on it's way" % (
@@ -34,7 +38,12 @@ def order(request):
             return render(
                 request,
                 "pizza/order.html",
-                {"pizzaform": new_form, "note": note, "multiple_form": multiple_form},
+                {
+                    "created_pizza_pk": created_pizza_pk,
+                    "pizzaform": new_form,
+                    "note": note,
+                    "multiple_form": multiple_form,
+                },
             )
     # Handling the rest of http methods
     else:
@@ -80,3 +89,24 @@ def pizzas(request):
     # Handle non-POST requests
     else:
         return render(request, "pizza/pizzas.html", {"formset": formset})
+
+
+def edit_order(request, pk):
+    # Get the order from db
+    pizza = Pizza.objects.get(pk=pk)
+    # Make a form fill with the order data
+    form = PizzaForm(instance=pizza)
+
+    # Handle POST requests
+    if request.method == "POST":
+        # Make a new form with the new order data
+        filled_form = PizzaForm(request.POST, instance=pizza)
+
+        if filled_form.is_valid():
+            # Save the new object
+            filled_form.save()
+            # Replace the past form with new
+            form = filled_form
+    # Handle non-POST requests
+    else:
+        return render(request, "pizza/edit_order.html", {"pizzaform": form, "pizza": pizza})
