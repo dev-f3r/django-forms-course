@@ -8,7 +8,6 @@ def home(request):
 
 
 def order(request):
-
     # Make a form set
     multiple_form = MultiplePizzaForm()
 
@@ -56,20 +55,25 @@ def pizzas(request):
     # Base form set
     formset = PizzaFormSet()
 
-    # Handle the received data
+    # Handle POST requests
     if request.method == "POST":
         # Fill a formset with the request data
         filled_formset = PizzaFormSet(request.POST)
+
+        # If the formset is valid
         if filled_formset.is_valid():
             # Print the topping 1 of all forms
             for form in filled_formset:
                 print(form.cleaned_data["topping1"])
             # Note of success
             note = "Pizzas have been orderer!"
+
+        # If the formset is invalid
         else:
             # Note of error
             note = "Order has not created, please try again."
 
         return render(request, "pizza/pizzas.html", {"note": note, "formset": formset})
+    # Handle non-POST requests
     else:
         return render(request, "pizza/pizzas.html", {"formset": formset})
