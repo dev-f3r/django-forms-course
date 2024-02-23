@@ -18,6 +18,9 @@ def order(request):
 
         # If `filled_form` is valid
         if filled_form.is_valid():
+            # Save the object
+            filled_form.save()
+
             # Make a message with the form information
             note = "Thanks for ordering! You %s with %s and %s is on it's way" % (
                 filled_form.cleaned_data["size"],
