@@ -6,19 +6,9 @@
     <a href="{% url "edit_order" created_pizza_pk %}">Edit your order</a>
 {% endif %}
 
-<form action="{% url "order" %}" method="post" novalidate>
+<form action="{% url "order" %}" method="post">
     {% csrf_token %}
-    {{ pizzaform.topping1.label_tag }}
-    {{ pizzaform.topping1 }}
-    {{ pizzaform.topping1.errors }}
-    {{ pizzaform.topping2.label_tag }}
-    {{ pizzaform.topping2 }}
-    {{ pizzaform.topping2.errors }}
-    <br>
-    <label for="{{ pizzaform.size.id_for_label }}">Size of your pizza: </label>
-    {{ pizzaform.size }}
-    {{ pizzaform.size.errors }}
-    <input type="submit" value="Order Pizza">
+    {{ pizzaform }}
 </form>
 
 
