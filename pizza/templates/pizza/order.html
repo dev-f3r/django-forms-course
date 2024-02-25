@@ -8,7 +8,9 @@
 
 <form action="{% url "order" %}" method="post">
     {% csrf_token %}
-    {{ pizzaform.as_p }}
+    <table>
+        {{ pizzaform.as_table }}
+    </table>
 
     <input type="submit" value="Order Pizza">
 </form>
