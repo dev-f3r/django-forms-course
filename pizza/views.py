@@ -32,19 +32,26 @@ def order(request):
                 filled_form.cleaned_data["topping2"],
             )
 
-            # Make a new form
-            new_form = PizzaForm()
-            # Render the order template and pass the new form and the message
-            return render(
-                request,
-                "pizza/order.html",
-                {
-                    "created_pizza_pk": created_pizza_pk,
-                    "pizzaform": new_form,
-                    "note": note,
-                    "multiple_form": multiple_form,
-                },
-            )
+            # Reset the form
+            filled_form = PizzaForm()
+        # If is not
+        else:
+            # Id of the order
+            created_pizza_pk = None
+            # Error message
+            note = "Pizza order has faild. Try again."
+
+        # Render the order template and pass the new form and the message
+        return render(
+            request,
+            "pizza/order.html",
+            {
+                "created_pizza_pk": created_pizza_pk,
+                "pizzaform": filled_form,
+                "note": note,
+                "multiple_form": multiple_form,
+            },
+        )
     # Handling the rest of http methods
     else:
         form = PizzaForm()
